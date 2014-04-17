@@ -50,5 +50,11 @@ public class EdgeData {
 		this.toID = toID;
 		this.type = type;
 		this.properties = properties;
-	}	
+	}
+	
+	public String toString(){
+		StringBuffer buff = new StringBuffer();
+		buff.append(getFromID() + "\t" + getToID() + "\t" + getType() + "\t" + properties.toString());
+		return buff.toString();
+	}
 }
