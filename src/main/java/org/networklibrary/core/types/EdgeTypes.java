@@ -7,7 +7,7 @@ public class EdgeTypes {
 //	public final static String MIR_TARGETING = "mir_targeting";
 //	public final static String STRING = "sppi";
 	
-	public final static String INTERACTS_WITH = "interaction";
+	public final static String INTERACTS_WITH = "interacts_with";
 	public final static String ACTIVATES = "activates";
 	public final static String INHIBITS = "inhibits";
 
@@ -19,6 +19,8 @@ public class EdgeTypes {
 	public final static String MEDIATES_INTERACTION = "mediates_interaction";
 	public final static String CO_CONTROLS_INTERACTION = "co_controls_interaction";
 	public final static String MODIFIES_PROTEIN = "modifies_protein";
+	public final static String IN_SAME_REACTION = "in_same_reaction";
+	public final static String IN_NEIGHBOURING_REACTION = "in_neighbouring_reaction";
 	
 	public final static String CORRELATES_POSITIVE = "correlates_positive";
 	public final static String CORRELATES_NEGATIVE = "correlates_negative";
