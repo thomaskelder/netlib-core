@@ -1,5 +1,6 @@
 package org.networklibrary.core.config;
 
+import java.net.URL;
 import java.util.logging.Logger;
 
 import org.apache.commons.configuration.CompositeConfiguration;
@@ -10,12 +11,11 @@ import org.apache.commons.configuration.PropertiesConfiguration;
 public class ConfigManager implements General, Dictionary, Indexing {
 	protected static final Logger log = Logger.getLogger(ConfigManager.class.getName());
 
-	public final static String DEFAULT_CONFIG_LOCATION = "netlib_default.conf";
-	public final static String USER_CONFIG_LOCATION = ".netlib.conf";
+	public final static String DEFAULT_CONFIG_LOCATION = "/netlib_default.config";
 	
 	protected final static String DICTIONARY_KEY = "dictionary";
 
-	protected Configuration config = null;
+	protected Configuration config = new CompositeConfiguration();
 	protected Configuration dictionary = null;
 
 	public ConfigManager(String runConfig){
@@ -26,14 +26,11 @@ public class ConfigManager implements General, Dictionary, Indexing {
 		load(null);
 	}
 
-	private void load(String runConfigFile) {
+	protected void load(String runConfigFile) {
 
-		config = new CompositeConfiguration();
-
-		Configuration runConfig = null;
 		if(runConfigFile != null && !runConfigFile.isEmpty()){
 			try {
-				runConfig = new PropertiesConfiguration(runConfigFile);
+				Configuration runConfig = new PropertiesConfiguration(runConfigFile);
 				((CompositeConfiguration)config).addConfiguration(runConfig);
 				log.info("loaded " + runConfigFile);
 			} catch (ConfigurationException e) {
@@ -41,9 +38,10 @@ public class ConfigManager implements General, Dictionary, Indexing {
 			}
 		}
 		
-		Configuration defaultConf;
 		try {
-			defaultConf = new PropertiesConfiguration(DEFAULT_CONFIG_LOCATION);
+			
+			URL defaultFile = getClass().getResource(DEFAULT_CONFIG_LOCATION);
+			Configuration defaultConf = new PropertiesConfiguration(defaultFile);
 			((CompositeConfiguration)config).addConfiguration(defaultConf);
 			log.info("loaded " + DEFAULT_CONFIG_LOCATION);
 		} catch (ConfigurationException e) {
@@ -57,7 +55,7 @@ public class ConfigManager implements General, Dictionary, Indexing {
 		// prepare the dictionary if one is provided.
 		if(config != null && config.containsKey(DICTIONARY_KEY)){
 			try {
-				dictionary = new PropertiesConfiguration(config.getString(DICTIONARY_KEY));
+				dictionary = new PropertiesConfiguration(getClass().getResource(config.getString(DICTIONARY_KEY)));
 			} catch (ConfigurationException e) {
 				log.warning("failed to load the dictionary at " + config.getString(DICTIONARY_KEY));
 				dictionary = null;
@@ -70,7 +68,7 @@ public class ConfigManager implements General, Dictionary, Indexing {
 	 */
 	@Override
 	public String getPrimaryKey() {
-		return getConfig().getString("primary_key");
+		return getConfig().getString("primary_index_key");
 	}
 	
 	@Override

@@ -14,9 +14,12 @@ public abstract class MultiTxStrategy<T> implements StorageEngine<T> {
 	private long currOp = 0;
 
 	private long maxOps = 0;
+	
+	private ConfigManager confMgr;
 
 	public MultiTxStrategy(GraphDatabaseService graph, ConfigManager confMgr) {
 		this.graph = graph;
+		this.confMgr = confMgr;
 
 		maxOps = 1000;
 	}
@@ -65,5 +68,9 @@ public abstract class MultiTxStrategy<T> implements StorageEngine<T> {
 
 	protected GraphDatabaseService getGraph(){
 		return graph;
+	}
+	
+	protected ConfigManager getConfMgr(){
+		return confMgr;
 	}
 }
