@@ -8,7 +8,7 @@ import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 
-public class ConfigManager implements General, Dictionary, Indexing {
+public abstract class ConfigManager implements General, Dictionary, Indexing {
 	protected static final Logger log = Logger.getLogger(ConfigManager.class.getName());
 
 	public final static String DEFAULT_CONFIG_LOCATION = "/netlib_default.config";
@@ -18,12 +18,8 @@ public class ConfigManager implements General, Dictionary, Indexing {
 	protected Configuration config = new CompositeConfiguration();
 	protected Configuration dictionary = null;
 
-	public ConfigManager(String runConfig){
-		load(runConfig);
-	}
 
 	public ConfigManager(){
-		load(null);
 	}
 
 	protected void load(String runConfigFile) {
@@ -76,6 +72,7 @@ public class ConfigManager implements General, Dictionary, Indexing {
 		return getConfig().getString("primary_index");
 	}
 	
+	
 	/*
 	 * General implementation
 	 */
@@ -84,6 +81,11 @@ public class ConfigManager implements General, Dictionary, Indexing {
 	}
 	public String getErrorLogLocation(){
 		return getConfig().getString("error_log");
+	}
+	
+	@Override
+	public String getDefaultName(){
+		return getConfig().getString("default_name");
 	}
 
 	/*
