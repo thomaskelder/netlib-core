@@ -1,5 +1,6 @@
 package org.networklibrary.core.config;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Logger;
 
@@ -20,6 +21,7 @@ public abstract class ConfigManager implements General, Dictionary, Indexing {
 
 
 	public ConfigManager(){
+		((CompositeConfiguration)config).addConfiguration(new PropertiesConfiguration(), true);
 	}
 
 	protected void load(String runConfigFile) {
@@ -39,6 +41,7 @@ public abstract class ConfigManager implements General, Dictionary, Indexing {
 			URL defaultFile = getClass().getResource(DEFAULT_CONFIG_LOCATION);
 			Configuration defaultConf = new PropertiesConfiguration(defaultFile);
 			((CompositeConfiguration)config).addConfiguration(defaultConf);
+
 			log.info("loaded " + DEFAULT_CONFIG_LOCATION);
 		} catch (ConfigurationException e) {
 			log.severe("could not load default config " + DEFAULT_CONFIG_LOCATION + ". Stopping");
@@ -51,7 +54,12 @@ public abstract class ConfigManager implements General, Dictionary, Indexing {
 		// prepare the dictionary if one is provided.
 		if(config != null && config.containsKey(DICTIONARY_KEY)){
 			try {
-				dictionary = new PropertiesConfiguration(getClass().getResource(config.getString(DICTIONARY_KEY)));
+				URL resource = getClass().getResource(config.getString(DICTIONARY_KEY));
+				if(resource == null){
+					dictionary = new PropertiesConfiguration(config.getString(DICTIONARY_KEY));
+				} else {
+					dictionary = new PropertiesConfiguration(resource);
+				}
 			} catch (ConfigurationException e) {
 				log.warning("failed to load the dictionary at " + config.getString(DICTIONARY_KEY));
 				dictionary = null;

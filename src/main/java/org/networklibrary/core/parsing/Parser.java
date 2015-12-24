@@ -3,12 +3,12 @@ package org.networklibrary.core.parsing;
 import java.util.Collection;
 import java.util.List;
 
-public interface Parser<T> {
+import org.networklibrary.core.config.Dictionary;
 
-//	boolean hasHeader();
-//	void parseHeader(String header);
+public interface Parser<T> {
 	
 	void setDataSource(String location) throws ParsingErrorException;
+	void setDictionary(Dictionary dictionary);
 	
 	boolean ready() throws ParsingErrorException;
 	Collection<T> parse() throws ParsingErrorException;
