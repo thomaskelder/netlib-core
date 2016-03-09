@@ -34,6 +34,8 @@ public class EdgeTypes {
 	public final static String ALTERED_EXPRESSION_IN = "altered_expression_in";
 	public final static String POST_TRANSLATIONAL_MODIFICATION_IN = "post_translational_modification_in";
 	
+	public final static String DGN_ASSOCIATION = "associated_with";
+	
 	public final static String IN_SAME_COMPONENT = "in_same_component";
 	public final static String IN_GROUP = "in_group";
 	
