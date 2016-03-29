@@ -14,7 +14,7 @@ public abstract class MultiTxStrategy<T> implements StorageEngine<T> {
 	private long currOp = 0;
 
 	private long maxOps = 0;
-	
+
 	private ConfigManager confMgr;
 
 	public MultiTxStrategy(GraphDatabaseService graph, ConfigManager confMgr) {
@@ -28,7 +28,7 @@ public abstract class MultiTxStrategy<T> implements StorageEngine<T> {
 	public void store(T curr) {
 		checkTx();
 		{
-		doStore(curr);
+			doStore(curr);
 		}
 	}
 
@@ -46,8 +46,10 @@ public abstract class MultiTxStrategy<T> implements StorageEngine<T> {
 
 	@Override
 	public void storeAll(Collection<T> bundles) {
-		for(T b : bundles){
-			store(b);
+		if(bundles != null ){
+			for(T b : bundles){
+				store(b);
+			}
 		}
 	}
 
@@ -58,7 +60,7 @@ public abstract class MultiTxStrategy<T> implements StorageEngine<T> {
 			currOp = 0;
 			currTx = null;
 		}
-		
+
 		if(currTx == null){
 			currTx = graph.beginTx();
 			currOp = 0;
@@ -69,7 +71,7 @@ public abstract class MultiTxStrategy<T> implements StorageEngine<T> {
 	protected GraphDatabaseService getGraph(){
 		return graph;
 	}
-	
+
 	protected ConfigManager getConfMgr(){
 		return confMgr;
 	}
